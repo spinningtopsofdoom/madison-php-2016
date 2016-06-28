@@ -1,0 +1,8 @@
+{
+    "name": "madison-php/example",
+    "description": "Sample project shwoing how to use generative testing",
+    "require": {
+        "giorgiosironi/eris": "dev-master"
+    },
+    "license": "MIT"
+}
