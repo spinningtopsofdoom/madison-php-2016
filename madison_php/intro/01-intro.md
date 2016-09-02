@@ -11,7 +11,7 @@
 ## Where does unit testing come up short?
 
 - Excessive handcrafting
-- Unit test cover small area
+- Unit tests implicitly generalize
 
 !SLIDE
 
@@ -56,15 +56,27 @@ Leads to tests being the same size or greater then the code they are testing
 
 !SLIDE
 
-With program size edge cases and interactions make up cast bulk of bugs
+The number of unit tests needed is O(c^N) where c is some constant and N is the number of interacting parts
+
+Islands of happy paths in a sea of edge cases
 
 !SLIDE
 
-## Unit tests allow way too much freedom of concepts
+## Unit tests give too much free reign in code
 
 !SLIDE
 
     @php
-    $player1->hits($ball);
-    $player2->catches($ball);
-    $player1Team->outs === ($current_outs + 1);
+    sum(1, 2, 3) === 6;
+    sum(5, 7) === 12;
+    sum(1000, 2) === 1002;
+
+!SLIDE
+
+    @php
+    $cart->addItem($shoe, 2);
+    $cart->getTotal() === ($old_total + ($show->price * 2));
+
+!SLIDE
+
+These tests are useful and capture facts about our system. However the abstractions they capture are implicit.
