@@ -1,5 +1,6 @@
 { "name": " Property Based Testing: Let the Computer Make Tests for You",
   "highlight": "solarized_dark",
   "sections": [
-      {"section":"madison_php/intro"}
+      {"section":"madison_php/intro"},
+      {"section":"madison_php/strawman"}
   ]}
