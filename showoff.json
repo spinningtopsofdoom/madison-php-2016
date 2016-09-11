@@ -3,5 +3,6 @@
   "sections": [
       {"section":"madison_php/intro"},
       {"section":"madison_php/strawman"},
-      {"section":"madison_php/generators"}
+      {"section":"madison_php/generators"},
+      {"section":"madison_php/object_generators"}
   ]}
