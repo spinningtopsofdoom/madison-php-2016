@@ -15,7 +15,7 @@
 
 ##Typical Unit Tests
 
-    @php
+    @@@ php
     add2(3, 7) === 10;
     sort(["c", "a", "b"]) === ["a", "b", "c"];
 
@@ -23,7 +23,7 @@
 
 ##Instead we test property that always holds
 
-    @php
+    @@@ php
     add2($a, $b) === add2($b, $a);
     sort($items) === sort(sort($items));
 
@@ -31,7 +31,7 @@
 
 ##Properties are tested via generated inputs
 
-    @php
+    @@@ php
     $add2_generator = Generator\vector(2, Generator\int());
     $sort_generator = Generator\seq(Generator\string());
 

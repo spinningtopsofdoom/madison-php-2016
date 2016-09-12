@@ -33,7 +33,7 @@ reasonibly
 
 Primitives generators are well documented and easy to use
 
-    @php
+    @@@ php
     Generator\nat(); // 3, 56, 1, 32
     Generator\string(); // "K", "g,", "jGHr38i"
     Generator\float(); // 3.87, 0.0, 1.7
@@ -49,7 +49,7 @@ Each reading looks like `['scale' => 'F', 'degress' => 50]`
 
 #Basic setup
 
-    @php
+    @@@ php
     $scale = Generator\elements(['C', 'F']);
     $degrees = Generator\choose(-100, 100));
     $reading = Generator\associative(['scale' => $scale, 'degrees' => $degrees]);
@@ -59,7 +59,7 @@ Each reading looks like `['scale' => 'F', 'degress' => 50]`
 
 #There should be 3 more "F"'s than "C"'s
 
-    @php
+    @@@ php
     $fahrenhiet = Generator\constant('F');
     $celsius = Generator\constant('C');
     $three_f_scale = Generator\frequency([3, $fahrenheit], [1, $celsius]);
@@ -68,7 +68,7 @@ Each reading looks like `['scale' => 'F', 'degress' => 50]`
 
 #Temperature is accurate to hundredth of a degree
 
-    @php
+    @@@ php
     $accurate_degrees = Generator\map(
         function($d) {
           list($base, $precision) = $d;
@@ -86,7 +86,7 @@ Each item is `[<type>, <item>]`
 
 ##Messy Room Items and types
 
-    @php
+    @@@ php
     $types = ['school', 'clothing', 'food'];
     $type_to_item = [
             'school' => ['notebook', 'pencil'],
@@ -97,7 +97,7 @@ Each item is `[<type>, <item>]`
 
 #Generate type then find item from type
 
-    @php
+    @@@ php
     $type = Generator\elements($types);
     $type_and_item = Generator\bind($type,
         function($type) use ($type_to_item){
@@ -115,7 +115,7 @@ Each item is `[<type>, <item>]`
 
 ##Word generators
 
-    @php
+    @@@ php
     $non_cat_word = Generator\elements(['where', 'is', 'the', 'fat', 'with', 'a', 'on']);
     $cat_word = Generator\constant('cat');
     $cat_within_word = Generator\elements(['hepcat', 'catamaran']);
@@ -124,7 +124,7 @@ Each item is `[<type>, <item>]`
 
 ##Make the words into a sentence
 
-    @php
+    @@@ php
     $word_gen = Generator\frequency([10, $non_cat_word], [1, $cat_word], [1, $cat_within_word]);
     $cat_sentence_gen = Generator\map(
         function($words) { return implode($words, ' '); },

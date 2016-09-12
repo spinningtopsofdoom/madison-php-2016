@@ -19,7 +19,7 @@
 
 ##Typical Usage
 
-    @php
+    @@@ php
     $friends = new FriendRelationship();
     $friends->addRelationship('Alice', 'Bob');
     $friends->addRelationship('Alice', 'Carol');
@@ -30,7 +30,7 @@
 
 ##This can be represented in data like so
 
-    @php
+    @@@ php
     $operationsi = [['addRelationship', 'Alice', 'Bob'],
         ['addRelationship', 'Alice', 'Carol'],
         ['addRelationship', 'Dan', 'Bob'],
@@ -47,7 +47,7 @@
 
 ##Create a new Friendship tracker
 
-    @php
+    @@@ php
     $relationship_map = Generator\associative([
         'people' => Generator\constant($people)
     ]);
@@ -62,7 +62,7 @@
 
 ##Friend Relationship operation generator
 
-    @php
+    @@@ php
     $operation = Generator\tuple(
         Generator\elements(['addRelationship', 'removeRelationship']),
         Generator\elements($people),
@@ -74,7 +74,7 @@
 
 ##Create the Friend Tracker with operations that modified it's state
 
-    @php
+    @@@ php
     $modified_friendship = Generator\bind(
         $operations,
         function($operations) use ($fresh_relationship){
