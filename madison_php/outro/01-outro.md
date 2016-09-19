@@ -19,7 +19,9 @@
 
     function sample($generator, $times, $seed = 10) {
         mt_srand($seed);
-        return Eris\Sample::of($generator, 'mt_rand')->repeat($times)->collected();
+        return Eris\Sample::of($generator, 'mt_rand')
+                 ->repeat($times)
+                 ->collected();
     }
 
 !SLIDE
@@ -47,7 +49,7 @@
 
 !SLIDE
 
-#Question?
+#Questions?
 
 !SLIDE
 

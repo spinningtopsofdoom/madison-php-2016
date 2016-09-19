@@ -9,6 +9,10 @@
 
 !SLIDE
 
+## Example object is friendship tracker that tracks friendships between a group of people
+
+!SLIDE
+
 ##Friendship tracker that has methods
 - addRelationship('Bob', 'Alice');
     - Adds a new friendship between 'Bob' and 'Alice'
@@ -31,7 +35,7 @@
 ##This can be represented in data like so
 
     @@@ php
-    $operationsi = [['addRelationship', 'Alice', 'Bob'],
+    $operations = [['addRelationship', 'Alice', 'Bob'],
         ['addRelationship', 'Alice', 'Carol'],
         ['addRelationship', 'Dan', 'Bob'],
         ['removeRelationship', 'Alice', 'Bob']];
@@ -53,7 +57,8 @@
     ]);
     $fresh_relationship = Generator\map(
         function($relationship_map) {
-            return new FriendRelationship($relationship_map['people']);
+            $people = $relationship_map['people'];
+            return new FriendRelationship($people);
         },
         $relationship_map
     );
@@ -63,8 +68,11 @@
 ##Friend Relationship operation generator
 
     @@@ php
+    $methods = Generator\elements([
+      'addRelationship',
+      'removeRelationship']);
     $operation = Generator\tuple(
-        Generator\elements(['addRelationship', 'removeRelationship']),
+        $methods,
         Generator\elements($people),
         Generator\elements($people)
     );
@@ -77,13 +85,14 @@
     @@@ php
     $modified_friendship = Generator\bind(
         $operations,
-        function($operations) use ($fresh_relationship){
-            return Generator\map(
-                function($relationship) use ($operations) {
-                    $new_relationship = apply_operations($relationship, $operations);
-                    return [$new_relationship, $operations];
-                },
-                $fresh_relationship);
+        function($operations) use ($fresh_relationship) {
+          return Generator\map(
+            function($relationship) use ($operations) {
+              $new_relationship = apply_operations($relationship,
+                                                   $operations);
+              return [$new_relationship, $operations];
+            },
+            $fresh_relationship);
         });
 
 !SLIDE

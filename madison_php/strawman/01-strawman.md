@@ -1,11 +1,11 @@
 !SLIDE
 
-## Strawman example
+# Strawman example
 ![Straw Man](../../images/straw_man.png)
 
 !SLIDE
 
-## Latin Filter
+# Latin Filter
 ## Transforms the word "cat" to "Felinus"
 
     @@@ php
@@ -13,7 +13,7 @@
 
 !SLIDE
 
-Basic unit tests for Latin filter
+# Basic unit tests for Latin filter
 
     @@@ php
     latinify("no felines here") === "no felines here";
@@ -22,7 +22,7 @@ Basic unit tests for Latin filter
 
 !SLIDE
 
-Function that passes all the tests and has 100% code coverage
+# Totally valid function
 
     @@@ php
     function latinify($plain_string) {
@@ -36,7 +36,7 @@ Function that passes all the tests and has 100% code coverage
 
 !SLIDE
 
-Lets add more tests
+# Lets add more tests
 
     @@@ php
     latinify("fat cat") === "fat Felinus";
@@ -64,14 +64,14 @@ Lets add more tests
 
 !SLIDE
 
-##The output string should contain no "cat"s
+# The output string should contain no "cat"s
 
     @@@ php
     substr_count(latinify($cat_string), "cat") === 0;
 
 !SLIDE
 
-Our function is even easier to fake
+# Our function is even easier to fake
 
     @@@ php
     function latinify($plain_string) {
@@ -80,14 +80,16 @@ Our function is even easier to fake
 
 !SLIDE
 
-##The output string has as many "Felinus" as the input has "cat"s
+## The output string has as many "Felinus" as the input has "cat"s
 
     @@@ php
-    substr_count($cat_string, "cat") === substr_count(latinify($cat_string), "Felinus");
+    $cat_count = substr_count($cat, "cat");
+    $feline_count = substr_count(latinify($cat), "Felinus");
+    $cat_count === $feline_count;
 
 !SLIDE
 
-Finally forced to create a reasonable function
+## Finally forced to create a reasonable function
 
     @@@ php
     function latinify($plain_string) {
@@ -99,19 +101,23 @@ Finally forced to create a reasonable function
 # What about "Hepcat on a catamaran"?
 ## No translation should take place
 
+    @@@ php
+    $cool_cat = "Hepcat on a catamaran"
+    $cool_cat === latinify($cool_cat);
+
 !SLIDE
 
 ## The number of words "Felinus" matches the number of sub strings "Felinus"
 
     @@@ php
-    $feline_string = latinify($cat_string);
-    $word_count = preg_match_all('/\bFelinus\b/', $feline_string);
-    $substring_count = substr_count($feline_string, "Felinus");
+    $feline= latinify($cat);
+    $word_count = preg_match_all('/\bFelinus\b/', $feline);
+    $substring_count = substr_count($feline, "Felinus");
     $word_count === $substr_count;
 
 !SLIDE
 
-Final function only replaces "cat" when it is a word
+## Final function only replaces "cat" when it is a word
 
     @@@ php
     function latinify($plain_string) {

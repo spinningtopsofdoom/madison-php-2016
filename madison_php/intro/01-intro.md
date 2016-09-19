@@ -1,10 +1,11 @@
 !SLIDE
 
-#Property Based Testing:
-##Let the Computer Make Tests for You
+# Property Based Testing:
+## Let the Computer Make Tests for You
 
 &nbsp;
-## @spinningtopsofdoom
+## Peter Schuck
+## @bendyworks / @spinningtopsofdoom
 
 !SLIDE
 
@@ -56,10 +57,10 @@
 
 !SLIDE
 
-#Property testing does no to get us to science
+# Property testing is not science
 ![Science](../../images/science.png)
 
 !SLIDE
 
-It does get us to hard science fiction
+# It's more like hard science fiction
 ![Science](../../images/hard_science_fiction.png)
