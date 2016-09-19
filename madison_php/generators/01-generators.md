@@ -19,6 +19,19 @@ Eris provides generators to create random inputs for tests
 
 Deductibles are typically used to deter the large number of claims that a consumer can be reasonibly expected to bear the cost of. By restricting its coverage to events that are significant enough to incur large costs, the insurance firm expects to pay out slightly smaller amounts much less frequently, incurring much higher savings.
 
+
+!SLIDE
+
+Deductibles are typically used to deter the large number of claims that a consumer can be reasonibly expected to bear the cost of.
+
+!SLIDE
+
+that a consumer can be reasonibly expected to bear the cost of.
+
+!SLIDE
+
+that a consumer can be reasonibly
+
 !SLIDE
 
 ##Shrinking takes a failing input and finds the smallest portion of it that fails the test
