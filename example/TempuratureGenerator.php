@@ -65,4 +65,15 @@ $accurate_reading = Generator\map(
 $accurate_measurements = Generator\vector(10, $accurate_reading);
 echo "Accurate Temperatures\n";
 var_dump(generate($accurate_measurements));
+
+$one_k_measurements = Generator\suchThat(
+    function ($measurements) {
+        return array_reduce($measurements, function($one_k, $reading) {
+            return $one_k || ($reading['scale'] === 'K');
+        }, false);
+    },
+    $accurate_measurements
+);
+echo "Final Temperatures\n";
+var_dump(generate($one_k_measurements));
 ?>
