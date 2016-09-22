@@ -26,7 +26,7 @@ function generate($generator, $seed = 10) {
 }
 
 $scale = Generator\elements(['C', 'F', 'K']);
-$degrees = Generator\choose(-100, 100);
+$degrees = Generator\choose(0, 100);
 $reading = Generator\associative(['scale' => $scale, 'degrees' => $degrees]);
 $measurements = Generator\vector(10, $reading);
 
@@ -43,14 +43,26 @@ $dist_measurements = Generator\vector(10, $dist_reading);
 echo "Realistically Distibuted Scale\n";
 var_dump(generate($dist_measurements));
 
-$accurate_degrees = Generator\map(
-    function($d) {
-      list($base, $precision) = $d;
-      return round(($base + $precision), 2);},
-    Generator\tuple(Generator\float(), $degrees));
-$accurate_reading = Generator\associative(['scale' => $dist_scale, 'degrees' => $accurate_degrees]);
-$accurate_measurements = Generator\vector(10, $accurate_reading);
+$realistic_reading = Generator\bind(
+    $dist_scale,
+    function($scale) {
+        $degrees = ['F' => Generator\choose(0, 100),
+            'C' => Generator\choose(0, 32),
+            'K' => Generator\choose(280, 310)];
+        return Generator\associative(['scale' => $scale, 'degrees' => $degrees[$scale]]);
+    }
+);
+$realistic_measurements = Generator\vector(10, $realistic_reading);
+echo "Realistic Temperatures\n";
+var_dump(generate($realistic_measurements));
 
+$accurate_reading = Generator\map(
+    function($gen_data) {
+      list($precision, $reading) = $gen_data;
+      $reading['degrees'] = round(($reading['degrees'] + $precision), 2);
+      return $reading;},
+    Generator\tuple(Generator\float(), $realistic_reading));
+$accurate_measurements = Generator\vector(10, $accurate_reading);
 echo "Accurate Temperatures\n";
 var_dump(generate($accurate_measurements));
 ?>
