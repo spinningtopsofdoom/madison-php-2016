@@ -29,8 +29,9 @@ $scale = Generator\elements(['C', 'F', 'K']);
 $degrees = Generator\choose(0, 100);
 $reading = Generator\associative(['scale' => $scale, 'degrees' => $degrees]);
 $measurements = Generator\vector(10, $reading);
-
+echo "\n";
 echo "Base Temperatures\n";
+echo "------------------------------------\n";
 var_dump(generate($measurements));
 
 $fahrenhiet = Generator\constant('F');
@@ -39,8 +40,9 @@ $kelvin = Generator\constant('K');
 $dist_scale = Generator\frequency([6, $fahrenhiet], [3, $celsius], [1, $kelvin]);
 $dist_reading = Generator\associative(['scale' => $dist_scale, 'degrees' => $degrees]);
 $dist_measurements = Generator\vector(10, $dist_reading);
-
+echo "\n";
 echo "Realistically Distibuted Scale\n";
+echo "------------------------------------\n";
 var_dump(generate($dist_measurements));
 
 $realistic_reading = Generator\bind(
@@ -53,7 +55,9 @@ $realistic_reading = Generator\bind(
     }
 );
 $realistic_measurements = Generator\vector(10, $realistic_reading);
+echo "\n";
 echo "Realistic Temperatures\n";
+echo "------------------------------------\n";
 var_dump(generate($realistic_measurements));
 
 $accurate_reading = Generator\map(
@@ -63,7 +67,9 @@ $accurate_reading = Generator\map(
       return $reading;},
     Generator\tuple(Generator\float(), $realistic_reading));
 $accurate_measurements = Generator\vector(10, $accurate_reading);
+echo "\n";
 echo "Accurate Temperatures\n";
+echo "------------------------------------\n";
 var_dump(generate($accurate_measurements));
 
 $one_k_measurements = Generator\suchThat(
@@ -74,6 +80,8 @@ $one_k_measurements = Generator\suchThat(
     },
     $accurate_measurements
 );
+echo "\n";
 echo "Final Temperatures\n";
+echo "------------------------------------\n";
 var_dump(generate($one_k_measurements));
 ?>
