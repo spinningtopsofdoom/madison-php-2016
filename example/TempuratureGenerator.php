@@ -25,7 +25,7 @@ function generate($generator, $seed = 10) {
     return Eris\Sample::of($generator, 'mt_rand')->repeat(1)->collected()[0];
 }
 
-$scale = Generator\elements(['C', 'F']);
+$scale = Generator\elements(['C', 'F', 'K']);
 $degrees = Generator\choose(-100, 100);
 $reading = Generator\associative(['scale' => $scale, 'degrees' => $degrees]);
 $measurements = Generator\vector(10, $reading);
@@ -35,19 +35,20 @@ var_dump(generate($measurements));
 
 $fahrenhiet = Generator\constant('F');
 $celsius = Generator\constant('C');
-$three_more_f_scale = Generator\frequency([3, $fahrenhiet], [1, $celsius]);
-$three_more_f_reading = Generator\associative(['scale' => $three_more_f_scale, 'degrees' => $degrees]);
-$three_more_f_measurements = Generator\vector(10, $three_more_f_reading);
+$kelvin = Generator\constant('K');
+$dist_scale = Generator\frequency([6, $fahrenhiet], [3, $celsius], [1, $kelvin]);
+$dist_reading = Generator\associative(['scale' => $dist_scale, 'degrees' => $degrees]);
+$dist_measurements = Generator\vector(10, $dist_reading);
 
-echo "Three More F Temperatures\n";
-var_dump(generate($three_more_f_measurements));
+echo "Realistically Distibuted Scale\n";
+var_dump(generate($dist_measurements));
 
 $accurate_degrees = Generator\map(
     function($d) {
       list($base, $precision) = $d;
       return round(($base + $precision), 2);},
     Generator\tuple(Generator\float(), $degrees));
-$accurate_reading = Generator\associative(['scale' => $three_more_f_scale, 'degrees' => $accurate_degrees]);
+$accurate_reading = Generator\associative(['scale' => $dist_scale, 'degrees' => $accurate_degrees]);
 $accurate_measurements = Generator\vector(10, $accurate_reading);
 
 echo "Accurate Temperatures\n";
