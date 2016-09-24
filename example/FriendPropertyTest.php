@@ -2,77 +2,77 @@
 //Bring in Eris Generator interface
 use Eris\Generator;
 
-class FriendRelationship {
+class Friendships {
 
     protected $people;
-    protected $relationships;
+    protected $friendships;
 
     function __construct() {
-        $this->relationships = [];
+        $this->friendships = [];
     }
 
-    function addRelationship($person, $new_friend) {
-        if (! isset($this->relationships[$person])) {
-            $this->relationships[$person] = [];
+    function addFriendship($person, $new_friend) {
+        if (! isset($this->friendships[$person])) {
+            $this->friendships[$person] = [];
         }
         if ($new_friend !== $person) {
-            $this->relationships[$person][$new_friend] = true;
-            $this->relationships[$new_friend][$person] = true;
+            $this->friendships[$person][$new_friend] = true;
+            $this->friendships[$new_friend][$person] = true;
         }
 
         return $this;
     }
 
-    function removeRelationship($person, $not_my_friend) {
-        if ($this->hasFriendship($person, $not_my_friend)) {
-            unset($this->relationships[$person][$not_my_friend]);
-            unset($this->relationships[$not_my_friend][$person]);
+    function removeFriendship($person, $not_my_friend) {
+        if ($this->friends($person, $not_my_friend)) {
+            unset($this->friendships[$person][$not_my_friend]);
+            unset($this->friendships[$not_my_friend][$person]);
         }
 
         return $this;
     }
 
     function getPeople() {
-        return array_keys($this->relationships);
+        return array_keys($this->friendships);
     }
 
-    function hasFriendship($person, $friend) {
-        return isset($this->relationships[$person]) && isset($this->relationships[$person][$friend]);
+    function friends($person, $friend) {
+        return isset($this->friendships[$person]) && isset($this->friendships[$person][$friend]);
     }
 
     function getFriends($person) {
-        if (! isset($this->relationships[$person])) {
+        if (! isset($this->friendships[$person])) {
             return [];
         }
-        return array_keys($this->relationships[$person]);
+        return array_keys($this->friendships[$person]);
     }
 }
 
 
-function apply_operation($relationship, $operation) {
+function apply_operation($friendship, $operation) {
     $values = array_slice($operation, 1);
     $operation = $operation[0];
 
     switch($operation) {
-    case 'addRelationship':
+    case 'addFriendship':
         list($person, $friend) = $values;
-        return $relationship->addRelationship($person, $friend);
+        return $friendship->addFriendship($person, $friend);
         break;
-    case 'removeRelationship':
+    case 'removeFriendship':
         list($person, $not_a_friend) = $values;
-        return $relationship->removeRelationship($person, $not_a_friend);
+        return $friendship->removeFriendship($person, $not_a_friend);
         break;
     }
 
-    return $relationship;
+    return $friendship;
 }
 
-function apply_operations($relationship, $operations) {
+function apply_operations($friendship, $operations) {
     foreach($operations as $operation) {
-        $relationship = apply_operation($relationship, $operation);
+        $friendship = apply_operation($friendship, $operation);
     }
 
-    return $relationship;
+    return $friendship;
 }
 
 class FriendTest extends \PHPUnit_Framework_TestCase
@@ -80,48 +80,48 @@ class FriendTest extends \PHPUnit_Framework_TestCase
     //Setup test generators and Eris methods
     use Eris\TestTrait;
 
-    protected $relationship_gen;
+    protected $friendship_gen;
 
     public function setUp() {
         $people = ['Damaris', 'Liyam', 'Wye', 'Isbelle', 'Rebexa', 'Aebby'];
 
-        $fresh_relationship = Generator\map(
-            function($relationship_map) {
-                return new FriendRelationship();
+        $fresh_friendship = Generator\map(
+            function($friendship_map) {
+                return new Friendships();
             },
             Generator\associative([])
         );
 
         $operation = Generator\tuple(
-            Generator\elements(['addRelationship', 'removeRelationship']),
+            Generator\elements(['addFriendship', 'removeFriendship']),
             Generator\elements($people),
             Generator\elements($people));
         $operations = Generator\seq($operation);
 
-        $this->relationship_gen = Generator\bind(
+        $this->friendship_gen = Generator\bind(
             $operations,
-            function($operations) use ($fresh_relationship){
+            function($operations) use ($fresh_friendship){
                 return Generator\map(
-                    function($relationship) use ($operations) {
-                        $new_relationship = apply_operations($relationship, $operations);
-                        return [$new_relationship, $operations];
+                    function($friendship) use ($operations) {
+                        $new_friendship = apply_operations($friendship, $operations);
+                        return [$new_friendship, $operations];
                     },
-                    $fresh_relationship);
+                    $fresh_friendship);
             });
     }
 
     public function testNoSelfFriend()
     {
-        $this->forAll($this->relationship_gen)
-             ->then(function ($relationship_and_operations) {
-                list($relationship, $operations) = $relationship_and_operations;
+        $this->forAll($this->friendship_gen)
+             ->then(function ($friendship_and_operations) {
+                list($friendship, $operations) = $friendship_and_operations;
                 $operation_string = var_export($operations, true);
 
                 $self_friended = false;
                 $self_friend = "";
-                $people = $relationship->getPeople();
+                $people = $friendship->getPeople();
                 foreach($people as $person) {
-                  $self_friended = $self_friended || $relationship->hasFriendship($person, $person);
+                  $self_friended = $self_friended || $friendship->friends($person, $person);
                   if ($self_friended) {
                     $self_friend = $person;
                     break;
@@ -132,34 +132,33 @@ class FriendTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSymetricalFriendship()
+    public function testSymmetricalFriendship()
     {
-        $this->forAll($this->relationship_gen)
-             ->then(function ($relationship_and_operations) {
-                list($relationship, $operations) = $relationship_and_operations;
+        $this->forAll($this->friendship_gen)
+             ->then(function ($friendship_and_operations) {
+                list($friendship, $operations) = $friendship_and_operations;
                 $operation_string = var_export($operations, true);
-                $people = $relationship->getPeople();
 
-                $symetrical = true;
+                $symmetrical = true;
                 $bad_person = "";
                 $bad_person_friends = '';
                 $bad_friend = "";
                 $bad_friend_friends = '';
-                $people = $relationship->getPeople();
+                $people = $friendship->getPeople();
                 foreach($people as $person) {
-                    $friends = $relationship->getFriends($person);
+                    $friends = $friendship->getFriends($person);
                     foreach($friends as $friend) {
-                        $symetrical = $symetrical && $relationship->hasFriendship($friend, $person);
-                        if (! $symetrical) {
+                        $symmetrical = $symmetrical && $friendship->friends($friend, $person);
+                        if (! $symmetrical) {
                             $bad_person = $person;
                             $bad_person_friends = "'". implode("', '", $friends) . "'";
                             $bad_friend = $friend;
-                            $bad_friend_friends = "'". implode("', '", $relationship->getFriends($friend)) . "'";
+                            $bad_friend_friends = "'". implode("', '", $friendship->getFriends($friend)) . "'";
                             break;
                         }
                     }
                 }
-                $this->assertTrue($symetrical, "Operations ({$operation_string}) lead to asymetrical friendship between ({$bad_person} with friends {$bad_person_friends}) and ({$bad_friend} with friends {$bad_friend_friends})");
+                $this->assertTrue($symmetrical, "Operations ({$operation_string}) lead to asymmetrical friendship between ({$bad_person} with friends {$bad_person_friends}) and ({$bad_friend} with friends {$bad_friend_friends})");
              }
         );
     }
