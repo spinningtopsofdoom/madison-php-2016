@@ -14,31 +14,37 @@
 !SLIDE
 
 ##Friendship tracker that has methods
-- addRelationship('Bob', 'Alice');
+- `addFriendship('Bob', 'Alice')`
     - Adds a new friendship between 'Bob' and 'Alice'
-- removeRelationship('Bob', 'Alice');
+- `removeFriendship('Bob', 'Alice')`
     - Removes the friendship between 'Bob' and 'Alice'
+- `friends('Alice', 'Bob')`
+    - Checks if 'Alice' and 'Bob' have a friendship
+- `getFriends('Alice')`
+    - Get all of 'Alice's friends
+- `getPeople()`
+    - Gets the people in our database ('Alice' and 'Bob')
 
 !SLIDE
 
 ##Typical Usage
 
     @@@ php
-    $friends = new FriendRelationship();
-    $friends->addRelationship('Alice', 'Bob');
-    $friends->addRelationship('Alice', 'Carol');
-    $friends->addRelationship('Dan', 'Bob');
-    $friends->removeRelationship('Alice', 'Bob');
+    $friends = new Friendships();
+    $friends->addFriendship('Alice', 'Bob');
+    $friends->addFriendship('Alice', 'Carol');
+    $friends->addFriendship('Dan', 'Bob');
+    $friends->removeFriendship('Alice', 'Bob');
 
 !SLIDE
 
 ##This can be represented in data like so
 
     @@@ php
-    $operations = [['addRelationship', 'Alice', 'Bob'],
-        ['addRelationship', 'Alice', 'Carol'],
-        ['addRelationship', 'Dan', 'Bob'],
-        ['removeRelationship', 'Alice', 'Bob']];
+    $operations = [['addFriendship', 'Alice', 'Bob'],
+        ['addFriendship', 'Alice', 'Carol'],
+        ['addFriendship', 'Dan', 'Bob'],
+        ['removeFriendship', 'Alice', 'Bob']];
 
 !SLIDE
 
@@ -52,25 +58,21 @@
 ##Create a new Friendship tracker
 
     @@@ php
-    $relationship_map = Generator\associative([
-        'people' => Generator\constant($people)
-    ]);
-    $fresh_relationship = Generator\map(
-        function($relationship_map) {
-            $people = $relationship_map['people'];
-            return new FriendRelationship($people);
+    $fresh_friendship = Generator\map(
+        function($friendship_map) {
+            return new Friendships();
         },
-        $relationship_map
+        Generator\associative([])
     );
 
 !SLIDE
 
-##Friend Relationship operation generator
+##Friend friendship operation generator
 
     @@@ php
     $methods = Generator\elements([
-      'addRelationship',
-      'removeRelationship']);
+      'addFriendship',
+      'removeFriendship']);
     $operation = Generator\tuple(
         $methods,
         Generator\elements($people),
@@ -85,18 +87,45 @@
     @@@ php
     $modified_friendship = Generator\bind(
         $operations,
-        function($operations) use ($fresh_relationship) {
+        function($operations) use ($fresh_friendship) {
           return Generator\map(
-            function($relationship) use ($operations) {
-              $new_relationship = apply_operations($relationship,
+            function($friendship) use ($operations) {
+              $new_friendship = apply_operations($friendship,
                                                    $operations);
-              return [$new_relationship, $operations];
+              return [$new_friendship, $operations];
             },
-            $fresh_relationship);
+            $fresh_friendship);
         });
 
 !SLIDE
 
-##Testable Friendship Tracer properties
-- Friendship is symmetric Alice is friends with Bob means Bob is friends with Alice
-- No self friending Alice can not be friends with herself
+# No self friending
+
+    @@@ php
+    $self_friended = false;
+    $people = $friendships->getPeople();
+    foreach($people as $person) {
+      if ($friendships->friends($person, $person)) {
+          $self_friended = true;
+      }
+    }
+
+    $self_friended === false;
+
+!SLIDE
+
+# Symmetrical Friendship
+
+    @@@ php
+    $symmetrical = true;
+    $people = $friendship->getPeople();
+    foreach($people as $person) {
+        $friends = $friendship->getFriends($person);
+        foreach($friends as $friend) {
+          if ($friendships->friends($friend, $person)) {
+            $symmetrical = false;
+          }
+        }
+    }
+
+    $symmetrical === true;
