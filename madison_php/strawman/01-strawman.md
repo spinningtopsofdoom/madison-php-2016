@@ -89,6 +89,27 @@
 
 !SLIDE
 
+## Make a sentence of only 'Felinus'
+
+    @@@ php
+    function latinify($plain_string) {
+      $cat_word_count = substr_count($plain_string, 'cat');
+      $felinuses =  array_fill(0, $cat_word_count, 'Felinus');
+      return implode(' ', $felinuses);
+    }
+
+!SLIDE
+
+# Replace 'Felinus' in the same place as 'cat'
+
+    @@@ php
+    $trimmed_cat = str_replace('cat', '', $cat_sentence);
+    $feline_sentence = latinify($cat_sentence);
+    $trimmed_felinus = str_replace('Felinus', '', $feline_sentence);
+    $trimmed_cat === $trimmed_felinus;
+
+!SLIDE
+
 ## Finally forced to create a reasonable function
 
     @@@ php
