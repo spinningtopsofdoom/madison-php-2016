@@ -7,13 +7,8 @@ class FriendRelationship {
     protected $people;
     protected $relationships;
 
-    function __construct($people) {
-        $this->people = $people;
-
+    function __construct() {
         $this->relationships = [];
-        foreach($people as $person) {
-            $this->relationships[$person] = [];
-        }
     }
 
     function addRelationship($person, $new_friend) {
@@ -31,11 +26,18 @@ class FriendRelationship {
     }
 
     function getPeople() {
-        return $this->people;
+        return array_keys($this->relationships);
     }
 
-    function getRelationships() {
-        return $this->relationships;
+    function hasFriendship($person, $friend) {
+        return isset($this->relationships[$person]) && isset($this->relationships[$person][$friend]);
+    }
+
+    function getFriends($person) {
+        if (! isset($this->relationships[$person])) {
+            return [];
+        }
+        return array_keys($this->relationships[$person]);
     }
 }
 
@@ -76,14 +78,11 @@ class FriendTest extends \PHPUnit_Framework_TestCase
     public function setUp() {
         $people = ['Damaris', 'Liyam', 'Wye', 'Isbelle', 'Rebexa', 'Aebby'];
 
-        $relationship_map = Generator\associative([
-            'people' => Generator\constant($people)
-        ]);
         $fresh_relationship = Generator\map(
             function($relationship_map) {
-                return new FriendRelationship($relationship_map['people']);
+                return new FriendRelationship();
             },
-            $relationship_map
+            Generator\associative([])
         );
 
         $operation = Generator\tuple(
@@ -114,14 +113,17 @@ class FriendTest extends \PHPUnit_Framework_TestCase
 
                 $self_friended = false;
                 $self_friend = "";
-                $relationships = $relationship->getRelationships();
-                foreach($relationships as $person => $friends) {
-                  $self_friended = $self_friended || isset($friends[$person]);
+                $people = $relationship->getPeople();
+
+
+                foreach($people as $person) {
+                  $self_friended = $self_friended || $relationship->hasFriendship($person, $person);
                   if ($self_friended) {
                     $self_friend = $person;
                     break;
                   }
                 }
+
                 $this->assertFalse($self_friended, "Operations ({$operation_string}) lead to ($self_friend) self friending");
              }
         );
@@ -133,23 +135,28 @@ class FriendTest extends \PHPUnit_Framework_TestCase
              ->then(function ($relationship_and_operations) {
                 list($relationship, $operations) = $relationship_and_operations;
                 $operation_string = var_export($operations, true);
-                $relationships = $relationship->getRelationships();
-                $relationship_string = var_export($relationships, true);
+                $people = $relationship->getPeople();
 
                 $symetrical = true;
                 $bad_person = "";
+                $bad_person_friends = '';
                 $bad_friend = "";
-                foreach($relationships as $person => $friends) {
-                    foreach(array_keys($friends) as $friend) {
-                        $symetrical = $symetrical && isset($relationships[$friend][$person]);
+                $bad_friend_friends = '';
+                $people = $relationship->getPeople();
+                foreach($people as $person) {
+                    $friends = $relationship->getFriends($person);
+                    foreach($friends as $friend) {
+                        $symetrical = $symetrical && $relationship->hasFriendship($friend, $person);
                         if (! $symetrical) {
                             $bad_person = $person;
+                            $bad_person_friends = "'". implode("', '", $friends) . "'";
                             $bad_friend = $friend;
+                            $bad_friend_friends = "'". implode("', '", $relationship->getFriends($friend)) . "'";
                             break;
                         }
                     }
                 }
-                $this->assertTrue($symetrical, "Relationships ({$relationship_string}) from operations ({$operation_string}) lead to asymetrical friendship between ({$bad_person}) and ({$bad_friend})");
+                $this->assertTrue($symetrical, "Operations ({$operation_string}) lead to asymetrical friendship between ({$bad_person} with friends {$bad_person_friends}) and ({$bad_friend} with friends {$bad_friend_friends})");
              }
         );
     }
