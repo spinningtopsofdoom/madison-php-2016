@@ -7,9 +7,7 @@ function fails_every_case($plain_string) {
 }
 
 function fails_order_test($plain_string) {
-  $cat_word_count = preg_match_all('/\bcat\b/', $plain_string);
-  $felinuses =  array_fill(0, $cat_word_count, 'Felinus');
-  return implode(' ', $felinuses);
+  return preg_replace('/\bcat\b/', 'Felinus behind us', $plain_string);
 }
 
 function fails_only_replace_word_test($plain_string) {

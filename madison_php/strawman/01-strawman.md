@@ -89,13 +89,11 @@
 
 !SLIDE
 
-## Make a sentence of only 'Felinus'
+## Lets add extra words to translation
 
     @@@ php
     function latinify($plain_string) {
-      $cat_word_count = substr_count($plain_string, 'cat');
-      $felinuses =  array_fill(0, $cat_word_count, 'Felinus');
-      return implode(' ', $felinuses);
+      return str_replace("cat", "Felinus bhind us", $plain_string);
     }
 
 !SLIDE
