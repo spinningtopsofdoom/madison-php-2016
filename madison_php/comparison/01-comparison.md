@@ -12,25 +12,25 @@
 
 !SLIDE
 
-#Makes testing more of a science
-- Testing deep properties instead of surface features
-- Running hundreds or thousands of experiments
-- Inputs are randomly generated
+# Great Power to weight ratio
+## Unit tests grow linearly with code size
+## Catch many more errors per lines of code then unit tests
 
 !SLIDE
 
-#Unit testing is soft science fiction
-![Science](../../images/soft_science_fiction.png)
+# Less effected by code change
+## Much less marginal cost per change and easier to extend
 
 !SLIDE
 
-# Property testing is not science
-![Science](../../images/science.png)
+# Better mental model
+## Explicit properties vs inferring from unit tests
 
 !SLIDE
 
-# It's more like hard science fiction
-![Science](../../images/hard_science_fiction.png)
+# Generators
+## Force thinking about your domain
+## Incredibly composable
 
 !SLIDE
 
