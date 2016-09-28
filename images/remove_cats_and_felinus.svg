@@ -30,6 +30,26 @@
          offset="1"
          style="stop-color:#000000;stop-opacity:1;" />
     </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       x1="16.875"
+       y1="22.851999"
+       x2="27.900999"
+       gradientUnits="userSpaceOnUse"
+       xlink:href="#linearGradient3907"
+       y2="34.977001"
+       id="linearGradient2502"
+       gradientTransform="translate(-0.070951,5.9632)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3907"
+       id="linearGradient3484"
+       gradientUnits="userSpaceOnUse"
+       x1="16.875"
+       y1="22.851999"
+       x2="27.900999"
+       y2="34.977001"
+       gradientTransform="translate(-0.070951,-7.566)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -38,9 +58,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.59759961"
-     inkscape:cx="439.40965"
-     inkscape:cy="180.08767"
+     inkscape:zoom="0.62642217"
+     inkscape:cx="407.58846"
+     inkscape:cy="121.44755"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -290,17 +310,46 @@
       <title
          id="title3409-1">Arrow  --  by NicholasJudy456</title>
     </path>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot9192"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(110.31519,108.54362)"><flowRegion
-         id="flowRegion9194"><rect
-           id="rect9196"
-           width="54.57378"
-           height="75.659126"
-           x="378.29565"
-           y="505.95428" /></flowRegion><flowPara
-         id="flowPara9198"
-         style="font-size:50px">=</flowPara></flowRoot>  </g>
+    <g
+       style="fill:#2b0000"
+       id="g4292"
+       transform="translate(485.55885,624.5167)">
+      <path
+         d="m 27.443049,34.3222 12.119,0.117 0,-6.996 -12.11,0 -7.02,-0.018 -11.959,0.027 -0.0355,6.969 12.002,0.018 7.004,-0.117 z"
+         style="fill:#2b0000;stroke:#000000;stroke-width:1px;stroke-opacity:0"
+         sodipodi:nodetypes="ccccccccc"
+         id="text1314"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 38.508049,33.4472 0.009,-5.009 -29.061,0.018 -0.027,4.973 29.079,0.018 z"
+         style="opacity:0.40860003;fill:#2b0000;stroke:url(#linearGradient2502);stroke-width:1px"
+         sodipodi:nodetypes="ccccc"
+         id="path7076"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 8.929049,30.9632 c 0,1.938 30.125,-0.938 30.125,0 l 0,-3 -30.125,0 0,3 z"
+         style="opacity:0.31183005;fill:#2b0000;fill-rule:evenodd"
+         sodipodi:nodetypes="ccccc"
+         id="path7914"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 27.443049,20.793 12.119,0.117 0,-6.996 -12.11,0 -7.02,-0.018 -11.959,0.027 -0.0355,6.969 12.002,0.018 7.004,-0.117 z"
+         style="fill:#2b0000;stroke:#000000;stroke-width:1px;stroke-opacity:0"
+         sodipodi:nodetypes="ccccccccc"
+         id="path2448"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 38.508049,19.918 0.009,-5.009 -29.061,0.018 -0.027,4.973 29.079,0.018 z"
+         style="opacity:0.40860003;fill:#2b0000;stroke:url(#linearGradient3484);stroke-width:1px"
+         sodipodi:nodetypes="ccccc"
+         id="path2450"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 8.929049,17.434 c 0,1.938 30.125,-0.938 30.125,0 l 0,-3 -30.125,0 0,3 z"
+         style="opacity:0.31183005;fill:#2b0000;fill-rule:evenodd"
+         sodipodi:nodetypes="ccccc"
+         id="path2452"
+         inkscape:connector-curvature="0" />
+    </g>
+  </g>
 </svg>
