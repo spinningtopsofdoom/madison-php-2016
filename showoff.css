@@ -5,3 +5,10 @@
 .smbullets ul li {
   text-align: left;
 }
+
+@media screen {
+
+  .slide {
+    font-size: 1.75em;
+  }
+}
