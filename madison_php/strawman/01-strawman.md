@@ -93,7 +93,7 @@
 
     @@@ php
     function latinify($plain_string) {
-      return str_replace("cat", "Felinus bhind us", $plain_string);
+      return str_replace("cat", "Felinus behind us", $plain_string);
     }
 
 !SLIDE

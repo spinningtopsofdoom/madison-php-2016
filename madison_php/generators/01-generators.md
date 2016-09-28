@@ -1,6 +1,10 @@
 !SLIDE
 
-## Eris provides generators to create random inputs for tests
+# Eris Generators
+
+!SLIDE
+
+## Generators provide random inputs for tests
 - Composable, you can build a bigger generator from smaller ones
 - Repeatable, a failing input can be repeated
 - Shrinkable, a generated input is shrunk to the smallest failure
@@ -36,7 +40,7 @@ reasonibly
 
 !SLIDE
 
-# Basic ERis Generators
+# Basic Eris Generators
 
     @@@ php
     Generator\nat(); // 3, 56, 1, 32
@@ -49,15 +53,15 @@ reasonibly
 # Eris composite generator example
 ##Collection of 10 temperature readings
 
-Each reading looks like `['scale' => 'F', 'degress' => 50]`
+Each reading looks like `['scale' => 'F', 'degrees' => 50]`
 
 !SLIDE
 
 #Basic setup
 
     @@@ php
-    $scale = Generator\elements(['C', 'F']);
-    $degrees = Generator\choose(-100, 100));
+    $scale = Generator\elements(['C', 'F', 'K']);
+    $degrees = Generator\choose(0, 100));
     $reading = Generator\associative([
       'scale' => $scale,
       'degrees' => $degrees]);
@@ -78,7 +82,7 @@ Each reading looks like `['scale' => 'F', 'degress' => 50]`
 
 !SLIDE
 
-# Tempurature readings should match scale
+# Temperatures should match scale
 
 	@@@ php
 	$realistic_reading = Generator\bind(
@@ -106,7 +110,7 @@ Each reading looks like `['scale' => 'F', 'degress' => 50]`
 
 !SLIDE
 
-# Measurements have to have one Kelvin Reading
+# Have at least one Kelvin Reading
 
     @@@ php
 	$measurements = Generator\vector(10, $accurate_reading);

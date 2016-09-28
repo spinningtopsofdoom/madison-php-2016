@@ -4,7 +4,7 @@
 
 !SLIDE
 
-#Shinking is currently very poor it it linear time
+#Shinking is currently very poor it is linear time
 ## Hypothesis (A Python Property Testing Library) has done a lot of work to making shrinking logarithmic time
 
 !SLIDE

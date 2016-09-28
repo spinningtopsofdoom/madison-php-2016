@@ -1,14 +1,6 @@
 !SLIDE
 
-##Thinking of properties your code will take up the majority of the time
-
-![Thinking](../../images/thinking)
-
-!SLIDE
-
-##You'll spend a lot time going over your models and problem
-
-![Hammock](../../images/hammock.png)
+# Finding Properties to test
 
 !SLIDE
 
