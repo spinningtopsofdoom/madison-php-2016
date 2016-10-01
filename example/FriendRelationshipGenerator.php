@@ -25,110 +25,115 @@ function generate($generator, $seed = 10) {
     return Eris\Sample::of($generator, 'mt_rand')->repeat(1)->collected()[0];
 }
 
-class FriendRelationship {
+class Friendships {
 
-    protected $people;
-    protected $relationships;
+    protected $friendships;
 
-    function __construct($people) {
-        $this->people = $people;
-
-        $this->relationships = [];
-        foreach($people as $person) {
-            $this->relationships[$person] = [];
-        }
+    function __construct() {
+        $this->friendships = [];
     }
 
-    function addRelationship($person, $new_friend) {
+    function addFriendship($person, $new_friend) {
+        if (! isset($this->friendships[$person])) {
+            $this->friendships[$person] = [];
+        }
         if ($new_friend !== $person) {
-            $this->relationships[$person][$new_friend] = true;
-            $this->relationships[$new_friend][$person] = true;
+            $this->friendships[$person][$new_friend] = true;
+            $this->friendships[$new_friend][$person] = true;
         }
 
         return $this;
     }
 
-    function removeRelationship($person, $not_my_friend) {
-        if (isset($this->relationships[$person][$not_my_friend])) {
-            unset($this->relationships[$person][$not_my_friend]);
-            unset($this->relationships[$not_my_friend][$person]);
+    function removeFriendship($person, $not_my_friend) {
+        if ($this->friends($person, $not_my_friend)) {
+            unset($this->friendships[$person][$not_my_friend]);
+            unset($this->friendships[$not_my_friend][$person]);
         }
 
         return $this;
     }
 
     function getPeople() {
-        return $this->people;
+        return array_keys($this->friendships);
     }
 
-    function getRelationships() {
-        return $this->relationships;
+    function friends($person, $friend) {
+        return isset($this->friendships[$person]) && isset($this->friendships[$person][$friend]);
+    }
+
+    function getFriends($person) {
+        if (! isset($this->friendships[$person])) {
+            return [];
+        }
+        return array_keys($this->friendships[$person]);
     }
 }
-
 $people = ['Damaris', 'Liyam', 'Wye', 'Isbelle', 'Rebexa', 'Aebby'];
 
-$relationship_map = Generator\associative([
-    'people' => Generator\constant($people)
-]);
-$fresh_relationship = Generator\map(
-    function($relationship_map) {
-        return new FriendRelationship($relationship_map['people']);
+$fresh_friendship = Generator\map(
+    function($friendship_map) {
+        return new Friendships();
     },
-    $relationship_map
+    Generator\associative([])
 );
 
-echo "Generate new FriendRelationship object\n";
-var_dump(generate($fresh_relationship));
+echo "Generate new Friendships object\n";
+echo "-------------------------------\n";
+var_dump(generate($fresh_friendship));
 
 $operation = Generator\tuple(
-    Generator\elements(['addRelationship', 'removeRelationship']),
+    Generator\elements(['addFriendship', 'removeFriendship']),
     Generator\elements($people),
     Generator\elements($people)
 );
 $operations = Generator\seq($operation);
 
-echo "Generate FriendRelationship operations\n";
+echo "\n";
+echo "Generate Friendships operations\n";
+echo "-------------------------------\n";
 var_dump(generate($operations));
 
-function apply_operation($relationship, $operation) {
+function apply_operation($friendship, $operation) {
     $values = array_slice($operation, 1);
     $operation = $operation[0];
 
     switch($operation) {
-    case 'addRelationship':
+    case 'addFriendship':
         list($person, $friend) = $values;
-        return $relationship->addRelationship($person, $friend);
+        return $friendship->addFriendship($person, $friend);
         break;
-    case 'removeRelationship':
+    case 'removeFriendship':
         list($person, $not_a_friend) = $values;
-        return $relationship->removeRelationship($person, $not_a_friend);
+        return $friendship->removeFriendship($person, $not_a_friend);
         break;
     }
 
-    return $relationship;
+    return $friendship;
 }
 
-function apply_operations($relationship, $operations) {
+function apply_operations($friendship, $operations) {
     foreach($operations as $operation) {
-        $relationship = apply_operation($relationship, $operation);
+        $friendship = apply_operation($friendship, $operation);
     }
 
-    return $relationship;
+    return $friendship;
 }
 
-$modified_relationship = Generator\map(
-    function($relationship_and_operations) {
-        list($relationship, $operations) = $relationship_and_operations;
+$modified_friendship = Generator\map(
+    function($friendship_and_operations) {
+        list($friendship, $operations) = $friendship_and_operations;
 
-        return apply_operations($relationship, $operations);
+        return apply_operations($friendship, $operations);
     },
     Generator\tuple(
-        $fresh_relationship,
+        $fresh_friendship,
         $operations
     )
 );
 
-echo "Generate FriendRelationship with adding and removing friendships\n";
-var_dump(generate($modified_relationship));
+echo "\n";
+echo "Generate modified Friendships with adding and removing friendships\n";
+echo "------------------------------------------------------------------\n";
+var_dump(generate($modified_friendship));
 ?>

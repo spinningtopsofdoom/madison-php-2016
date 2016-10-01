@@ -4,7 +4,6 @@ use Eris\Generator;
 
 class Friendships {
 
-    protected $people;
     protected $friendships;
 
     function __construct() {
@@ -47,7 +46,6 @@ class Friendships {
         return array_keys($this->friendships[$person]);
     }
 }
-
 
 function apply_operation($friendship, $operation) {
     $values = array_slice($operation, 1);
